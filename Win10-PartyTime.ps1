@@ -60,6 +60,20 @@ Write-Host "Desktop - Removing All Shortcuts"
 Get-ChildItem $env:USERPROFILE\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 
+##########
+
+# Explorer - Add Recycle Bin to sidebar
+
+Write-Host "Start - Remove Recently Added Section"
+If (!(Test-Path "HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}")) {
+	New-Item -Path "HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}" -Force | Out-Null
+	}
+Set-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}" -Name "System.IsPinnedToNameSpaceTree" -Type DWord -Value 1
+
+If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}")) {
+	New-Item -Path "Registry::HKEY_USERS\DEFAULTY\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}" -Force | Out-Null
+	}
+Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}" -Name "System.IsPinnedToNameSpaceTree" -Type DWord -Value 1
 
 ##########
 
