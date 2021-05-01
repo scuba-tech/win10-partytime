@@ -64,7 +64,7 @@ Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 
 # Explorer - Add Recycle Bin to sidebar
 
-Write-Host "Start - Remove Recently Added Section"
+Write-Host "Explorer - Add Recycle Bin to sidebar"
 If (!(Test-Path "HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}")) {
 	New-Item -Path "HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}" -Force | Out-Null
 	}
