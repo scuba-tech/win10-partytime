@@ -107,7 +107,6 @@ ForEach ($App in $AppsList)
 	}
 }
 
-
 ##########
 
 Write-Host "Starting registry edits..."
@@ -123,7 +122,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Policies\Microsoft\Windo
 	New-Item -Path "Registry::HKEY_USERS\DEFAULTY\Software\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Policies\Microsoft\Windows\Explorer" -Name "HideRecentlyAddedApps" -Type DWord -Value 1
-
 
 ##########
 
@@ -197,9 +195,7 @@ foreach ($regAlias in $regAliases){
 Import-StartLayout -LayoutPath $layoutFile -MountPath $env:SystemDrive\
 Remove-Item $layoutFile
 
-
 ##########
-
 
 # Taskbar - Disable Notification Center Badge Count 
 
@@ -212,7 +208,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\Curren
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" -Name "NOC_GLOBAL_SETTING_GLEAM_ENABLED" -Type DWord -Value 0
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" -Name "NOC_GLOBAL_SETTING_BADGE_ENABLED" -Type DWord -Value 0
 
-
 ##########
 
 # Taskbar - Remove Type Here To Search Bar
@@ -224,7 +219,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\Curren
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 0
 
-
 ##########
 
 # Taskbar - Remove Cortana Button
@@ -232,7 +226,6 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows
 Write-Host "Taskbar - Remove Cortana Button"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCortanaButton" -Type DWord -Value 0
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCortanaButton" -Type DWord -Value 0
-
 
 ##########
 
@@ -242,7 +235,6 @@ Write-Host "Taskbar - Remove Task View Button"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0
 
-
 ##########
 
 # Taskbar - Show all Systray Icons
@@ -250,7 +242,6 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows
 Write-Host "Taskbar - Show all Systray Icons"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
-
 
 ##########
 
@@ -260,7 +251,6 @@ Write-Host "Taskbar - Show all Application Titles"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarGlomLevel" -Type DWord -Value 1
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarGlomLevel" -Type DWord -Value 1
 
-
 ##########
 
 # Taskbar - Remove Meet Now Icon
@@ -268,6 +258,42 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows
 Write-Host "Taskbar - Remove Meet Now Icon"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "HideSCAMeetNow" -Value 1
 
+##########
+
+# Taskbar - Remove News and Weather Icon
+
+Write-Host "Taskbar - Remove News and Weather Icon"
+
+If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds")) {
+	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" -Force | Out-Null
+	}
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
+
+If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds")) {
+	New-Item -Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" -Force | Out-Null
+	}
+Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarViewMode" -Type DWord -Value 2
+
+##########
+
+# Start Menu - Remove Suggested Apps and even more advertising
+
+Write-Verbose "Start Menu - Remove Suggested Apps and even more advertising"
+
+If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent")) {
+	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Force | Out-Null
+	}
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Type DWord -Value 1
+
+If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager")) {
+	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Force | Out-Null
+	}
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
+
+If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager")) {
+	New-Item -Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Force | Out-Null
+	}
+Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
 
 ##########
 
@@ -305,7 +331,6 @@ Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6
 # taskkill /f /im OneDrive.exe
 # C:\Windows\SysWOW64\OneDriveSetup.exe /uninstall
 
-
 ##########
 
 # Program - Remove Cortana while preserving search
@@ -338,7 +363,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\InputPersonali
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -Type DWord -Value 0
 
-
 ##########
 
 # Explorer - Show all File Extensions
@@ -346,7 +370,6 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\InputPe
 Write-Host "Explorer - Show all File Extensions"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 0
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 0
-
 
 ##########
 
@@ -366,14 +389,12 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Secur
 Write-Host "Disable Windows Update automatic restart"
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsUpdate\UX\Settings" -Name "UxOption" -Type DWord -Value 1
 
-
 ##########
 
 # Core - Disable Telemetry
 
 Write-Host "Disable Telemetry"
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
-
 
 ##########
 
@@ -384,7 +405,6 @@ If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE")) {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE" -Name "DisablePrivacyExperience" -Type DWord -Value 1
-
 
 ##########
 
@@ -407,7 +427,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Siuf\Rules")) 
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Type DWord -Value 0
 
-
 ##########
 
 # Core - Disable Advertising ID Tracking
@@ -422,7 +441,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\Curren
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
 
-
 ##########
 
 # Core - Disable Sticky keys prompt
@@ -430,7 +448,6 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows
 Write-Host "Disable Sticky keys prompt"
 Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name "Flags" -Type String -Value "506"
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Control Panel\Accessibility\StickyKeys" -Name "Flags" -Type String -Value "506"
-
 
 ##########
 
@@ -442,7 +459,6 @@ If (!(Test-Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\Curren
 	New-Item -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Search" -Force | Out-Null
 	}
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Software\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type DWord -Value 0
-
 
 ##########
 
@@ -462,7 +478,6 @@ Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Control Panel\Internationa
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Control Panel\International" -Name "sShortTime" -Type String -Value "HH:mm"
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Control Panel\International" -Name "sTimeFormat" -Type String -Value "HH:mm:ss"
 Set-ItemProperty -Path "Registry::HKEY_USERS\DEFAULTY\Control Panel\International" -Name "sYearMonth" -Type String -Value "MMMM yyyy"
-
 
 ##########
 
